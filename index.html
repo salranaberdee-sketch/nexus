@@ -53,8 +53,13 @@
           <i class="fas fa-comment-dots"></i>
           <span class="badge">1</span>
         </button>
-        <div class="nav-avatar" id="profileBtn">
-          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=nexus123" alt="Profile" />
+        <!-- Login button (show when logged out) -->
+        <button class="btn-primary" id="loginBtn" onclick="nexusAuth.showAuthModal('login')" style="padding:8px 16px;font-size:14px;">
+          <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+        </button>
+        <!-- Avatar (show when logged in) -->
+        <div class="nav-avatar" id="navAvatar" style="display:none;cursor:pointer;position:relative;" title="ออกจากระบบ" onclick="nexusAuth.signOut()">
+          <img id="navAvatarImg" src="https://api.dicebear.com/7.x/avataaars/svg?seed=default" alt="Profile" />
           <div class="avatar-status online"></div>
         </div>
       </div>
@@ -648,6 +653,87 @@
     </div>
   </div>
 
+  <!-- ===== AUTH MODAL ===== -->
+  <div class="panel-overlay" id="authModal">
+    <div class="side-panel" style="max-width:440px;margin:auto;border-radius:var(--radius-lg);top:50%;transform:translateY(-50%) translateX(-50%);left:50%;right:auto;height:auto;max-height:90vh;overflow-y:auto;">
+      <div style="padding:24px;">
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+          <h2 style="margin:0;font-size:20px;"><i class="fas fa-shield-alt" style="color:var(--primary);margin-right:8px;"></i>Nexus Account</h2>
+          <button class="btn-icon" onclick="nexusAuth.hideAuthModal()"><i class="fas fa-times"></i></button>
+        </div>
+
+        <!-- Tabs -->
+        <div style="display:flex;gap:8px;margin-bottom:24px;background:var(--bg);border-radius:var(--radius-sm);padding:4px;">
+          <button class="auth-tab active" data-tab="login" onclick="nexusAuth.switchAuthTab('login')"
+            style="flex:1;padding:10px;border:none;background:transparent;border-radius:var(--radius-sm);cursor:pointer;font-weight:500;transition:all 0.2s;">
+            เข้าสู่ระบบ
+          </button>
+          <button class="auth-tab" data-tab="register" onclick="nexusAuth.switchAuthTab('register')"
+            style="flex:1;padding:10px;border:none;background:transparent;border-radius:var(--radius-sm);cursor:pointer;font-weight:500;transition:all 0.2s;">
+            สมัครสมาชิก
+          </button>
+        </div>
+
+        <!-- Login Form -->
+        <form class="auth-form active" id="loginForm" onsubmit="handleLogin(event)">
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div>
+              <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">Email</label>
+              <input type="email" id="loginEmail" required placeholder="your@email.com"
+                style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text-primary);font-size:14px;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">รหัสผ่าน</label>
+              <input type="password" id="loginPassword" required placeholder="••••••••"
+                style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text-primary);font-size:14px;box-sizing:border-box;">
+            </div>
+            <button type="submit" class="btn-post" style="width:100%;margin-top:8px;">
+              <i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ
+            </button>
+          </div>
+        </form>
+
+        <!-- Register Form -->
+        <form class="auth-form" id="registerForm" onsubmit="handleRegister(event)">
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div>
+              <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">ชื่อที่แสดง</label>
+              <input type="text" id="regName" required placeholder="ชื่อของคุณ"
+                style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text-primary);font-size:14px;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">@handle</label>
+              <input type="text" id="regHandle" required placeholder="yourhandle"
+                style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text-primary);font-size:14px;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">Email</label>
+              <input type="email" id="regEmail" required placeholder="your@email.com"
+                style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text-primary);font-size:14px;box-sizing:border-box;">
+            </div>
+            <div>
+              <label style="font-size:13px;color:var(--text-secondary);display:block;margin-bottom:6px;">รหัสผ่าน (อย่างน้อย 6 ตัว)</label>
+              <input type="password" id="regPassword" required placeholder="••••••••" minlength="6"
+                style="width:100%;padding:12px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-card);color:var(--text-primary);font-size:14px;box-sizing:border-box;">
+            </div>
+            <p style="font-size:12px;color:var(--text-secondary);margin:0;">
+              🔒 ข้อมูลของคุณเป็นของคุณ 100% — Nexus ไม่ขายหรือแชร์ข้อมูลกับบุคคลที่สาม
+            </p>
+            <button type="submit" class="btn-post" style="width:100%;margin-top:8px;">
+              <i class="fas fa-user-plus"></i> สมัครสมาชิก
+            </button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Supabase JS Client -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Nexus Supabase client -->
+  <script src="src/utils/supabaseClient.js"></script>
   <script src="src/data/mockData.js"></script>
   <script src="src/utils/helpers.js"></script>
   <script src="src/components/post.js"></script>

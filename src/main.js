@@ -2,7 +2,48 @@
 // NEXUS — Main Application Controller
 // ============================================
 
-document.addEventListener('DOMContentLoaded', () => {
+// ── Auth Form Handlers (global scope) ──────
+async function handleLogin(e) {
+  e.preventDefault();
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังเข้าสู่ระบบ...';
+  await nexusAuth.signIn(email, password);
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> เข้าสู่ระบบ';
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById('regName').value;
+  const handle = document.getElementById('regHandle').value.replace('@','').toLowerCase();
+  const email = document.getElementById('regEmail').value;
+  const password = document.getElementById('regPassword').value;
+  const btn = e.target.querySelector('button[type=submit]');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> กำลังสมัคร...';
+  await nexusAuth.signUp(email, password, name, handle);
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fas fa-user-plus"></i> สมัครสมาชิก';
+}
+
+// Style active auth tab
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('auth-tab')) {
+    document.querySelectorAll('.auth-tab').forEach(t => {
+      t.style.background = t.classList.contains('active') ? 'var(--bg-card)' : 'transparent';
+      t.style.color = t.classList.contains('active') ? 'var(--primary)' : 'var(--text-secondary)';
+      t.style.fontWeight = t.classList.contains('active') ? '600' : '400';
+    });
+  }
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  // ── Init Supabase Auth ──
+  await initAuth();
 
   // ── Initialize Pages ──
   initFeed();
