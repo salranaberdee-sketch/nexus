@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nexus — Social Network ที่เป็นของคุณ</title>
+  <link rel="stylesheet" href="src/styles/main.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body data-theme="light">
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <div class="nav-logo">
+        <div class="logo-icon">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <circle cx="16" cy="16" r="14" stroke="url(#logoGrad)" stroke-width="2.5"/>
+            <circle cx="16" cy="11" r="4" fill="url(#logoGrad)"/>
+            <circle cx="8" cy="22" r="3" fill="url(#logoGrad)" opacity="0.7"/>
+            <circle cx="24" cy="22" r="3" fill="url(#logoGrad)" opacity="0.7"/>
+            <line x1="16" y1="15" x2="8" y2="19" stroke="url(#logoGrad)" stroke-width="1.5"/>
+            <line x1="16" y1="15" x2="24" y2="19" stroke="url(#logoGrad)" stroke-width="1.5"/>
+            <defs>
+              <linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#7C3AED"/>
+                <stop offset="100%" stop-color="#06B6D4"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="logo-text">Nexus</span>
+        <span class="logo-badge">Beta</span>
+      </div>
+
+      <div class="nav-search">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="ค้นหาคน, กลุ่ม, เนื้อหา..." id="globalSearch" />
+        <kbd>⌘K</kbd>
+      </div>
+
+      <div class="nav-actions">
+        <button class="btn-icon" id="themeToggle" title="เปลี่ยน Theme">
+          <i class="fas fa-moon"></i>
+        </button>
+        <button class="btn-icon notif-btn" id="notifBtn">
+          <i class="fas fa-bell"></i>
+          <span class="badge">3</span>
+        </button>
+        <button class="btn-icon" id="msgBtn">
+          <i class="fas fa-comment-dots"></i>
+          <span class="badge">1</span>
+        </button>
+        <div class="nav-avatar" id="profileBtn">
+          <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=nexus123" alt="Profile" />
+          <div class="avatar-status online"></div>
+        </div>
+      </div>
+
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== MAIN LAYOUT ===== -->
+  <div class="app-layout" id="appLayout">
+
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar-left" id="sidebarLeft">
+      <div class="sidebar-content">
+
+        <!-- User Profile Card -->
+        <div class="profile-card">
+          <div class="profile-cover" style="background: linear-gradient(135deg, #7C3AED, #06B6D4)"></div>
+          <div class="profile-info">
+            <div class="profile-avatar-wrap">
+              <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=nexus123" alt="Avatar" class="profile-avatar" />
+              <div class="avatar-status online"></div>
+            </div>
+            <h3 class="profile-name">Alex Nexus</h3>
+            <p class="profile-handle">@alex.nexus <span class="verified-badge" title="Verified Human">✓</span></p>
+            <div class="profile-stats">
+              <div class="stat"><strong>248</strong><span>เพื่อน</span></div>
+              <div class="stat"><strong>1.2K</strong><span>ผู้ติดตาม</span></div>
+              <div class="stat"><strong>87</strong><span>โพสต์</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="sidebar-nav">
+          <a href="#" class="nav-item active" data-page="feed">
+            <i class="fas fa-home"></i>
+            <span>หน้าหลัก</span>
+          </a>
+          <a href="#" class="nav-item" data-page="explore">
+            <i class="fas fa-compass"></i>
+            <span>สำรวจ</span>
+          </a>
+          <a href="#" class="nav-item" data-page="communities">
+            <i class="fas fa-users"></i>
+            <span>ชุมชน</span>
+            <span class="nav-badge">5</span>
+          </a>
+          <a href="#" class="nav-item" data-page="creator">
+            <i class="fas fa-star"></i>
+            <span>Creator Hub</span>
+          </a>
+          <a href="#" class="nav-item" data-page="privacy">
+            <i class="fas fa-shield-alt"></i>
+            <span>Data Vault</span>
+            <span class="nav-badge new">New</span>
+          </a>
+          <a href="#" class="nav-item" data-page="anonymous">
+            <i class="fas fa-user-secret"></i>
+            <span>Anonymous Mode</span>
+          </a>
+        </nav>
+
+        <!-- Algorithm Control -->
+        <div class="algo-control">
+          <div class="algo-header">
+            <i class="fas fa-sliders-h"></i>
+            <span>ควบคุม Feed ของคุณ</span>
+          </div>
+          <div class="algo-modes">
+            <button class="algo-btn active" data-mode="smart">
+              <i class="fas fa-brain"></i> Smart
+            </button>
+            <button class="algo-btn" data-mode="chrono">
+              <i class="fas fa-clock"></i> ล่าสุด
+            </button>
+            <button class="algo-btn" data-mode="local">
+              <i class="fas fa-map-marker-alt"></i> ใกล้ฉัน
+            </button>
+            <button class="algo-btn" data-mode="diverse">
+              <i class="fas fa-random"></i> หลากหลาย
+            </button>
+          </div>
+        </div>
+
+        <!-- Mental Health Widget -->
+        <div class="wellbeing-widget" id="wellbeingWidget">
+          <div class="widget-header">
+            <i class="fas fa-heart text-pink"></i>
+            <span>สุขภาพจิตวันนี้</span>
+          </div>
+          <div class="screen-time">
+            <div class="time-display">
+              <span class="time-num" id="screenTimeNum">0</span>
+              <span class="time-unit">นาที</span>
+            </div>
+            <div class="time-bar">
+              <div class="time-fill" id="timeBarFill" style="width:0%"></div>
+            </div>
+            <p class="time-label">เป้าหมาย: 60 นาที/วัน</p>
+          </div>
+          <div class="mood-check">
+            <p>ตอนนี้รู้สึกอย่างไร?</p>
+            <div class="mood-buttons">
+              <button class="mood-btn" data-mood="great">😄</button>
+              <button class="mood-btn" data-mood="good">🙂</button>
+              <button class="mood-btn" data-mood="ok">😐</button>
+              <button class="mood-btn" data-mood="bad">😔</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </aside>
+
+    <!-- MAIN FEED -->
+    <main class="main-feed" id="mainFeed">
+
+      <!-- Page: Feed -->
+      <div class="page active" id="page-feed">
+
+        <!-- Create Post -->
+        <div class="create-post card">
+          <div class="create-top">
+            <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=nexus123" alt="You" class="small-avatar" />
+            <div class="create-input-wrap">
+              <div class="create-input" id="postInput" contenteditable="true" 
+                   data-placeholder="มีอะไรอยากแชร์? (ใช้ # สำหรับ tag, @ สำหรับ mention)"></div>
+            </div>
+          </div>
+
+          <!-- Anonymous Toggle -->
+          <div class="anon-toggle-row">
+            <label class="toggle-switch">
+              <input type="checkbox" id="anonToggle" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="anon-label">
+              <i class="fas fa-user-secret"></i>
+              โพสต์แบบไม่ระบุตัวตน
+            </span>
+            <span class="anon-hint">แสดงเป็น "Anon_4829"</span>
+          </div>
+
+          <!-- Post Actions -->
+          <div class="create-actions">
+            <div class="media-buttons">
+              <button class="media-btn" onclick="triggerMedia('photo')">
+                <i class="fas fa-image text-green"></i> รูปภาพ
+              </button>
+              <button class="media-btn" onclick="triggerMedia('video')">
+                <i class="fas fa-video text-blue"></i> วิดีโอ
+              </button>
+              <button class="media-btn" onclick="triggerMedia('poll')">
+                <i class="fas fa-poll text-purple"></i> โหวต
+              </button>
+              <button class="media-btn" onclick="triggerMedia('location')">
+                <i class="fas fa-map-marker-alt text-red"></i> สถานที่
+              </button>
+            </div>
+            <div class="post-right">
+              <select class="visibility-select" id="postVisibility">
+                <option value="public">🌍 สาธารณะ</option>
+                <option value="friends">👥 เพื่อน</option>
+                <option value="community">🏘️ ชุมชน</option>
+                <option value="private">🔒 ส่วนตัว</option>
+              </select>
+              <button class="btn-post" id="submitPost">โพสต์</button>
+            </div>
+          </div>
+
+          <!-- Poll Builder (hidden) -->
+          <div class="poll-builder" id="pollBuilder" style="display:none">
+            <h4><i class="fas fa-poll"></i> สร้างการโหวต</h4>
+            <input type="text" placeholder="คำถาม..." class="poll-question" id="pollQuestion" />
+            <div id="pollOptions">
+              <input type="text" placeholder="ตัวเลือก 1" class="poll-option" />
+              <input type="text" placeholder="ตัวเลือก 2" class="poll-option" />
+            </div>
+            <button class="btn-add-option" onclick="addPollOption()">+ เพิ่มตัวเลือก</button>
+          </div>
+        </div>
+
+        <!-- Feed Filter Pills -->
+        <div class="feed-filters">
+          <button class="filter-pill active" data-filter="all">ทั้งหมด</button>
+          <button class="filter-pill" data-filter="friends">เพื่อน</button>
+          <button class="filter-pill" data-filter="communities">ชุมชน</button>
+          <button class="filter-pill" data-filter="trending">กำลังฮิต</button>
+          <button class="filter-pill" data-filter="local">ใกล้ฉัน</button>
+        </div>
+
+        <!-- Diversity Alert -->
+        <div class="diversity-alert" id="diversityAlert" style="display:none">
+          <i class="fas fa-exclamation-circle"></i>
+          <div>
+            <strong>Echo Chamber Alert!</strong>
+            <p>Feed ของคุณมีความคิดเห็นที่หลากหลายน้อยมาก ลองเปลี่ยนเป็นโหมด "หลากหลาย" ไหม?</p>
+          </div>
+          <button onclick="setAlgoMode('diverse')" class="btn-sm-primary">เปลี่ยนเลย</button>
+          <button onclick="closeDiversityAlert()" class="btn-sm-ghost">ไม่เป็นไร</button>
+        </div>
+
+        <!-- POSTS FEED -->
+        <div class="posts-feed" id="postsFeed">
+          <!-- Posts will be rendered by JS -->
+        </div>
+
+        <!-- Load More -->
+        <div class="load-more-wrap">
+          <button class="btn-load-more" id="loadMoreBtn">
+            <i class="fas fa-arrow-down"></i> โหลดเพิ่มเติม
+          </button>
+        </div>
+      </div>
+
+      <!-- Page: Explore -->
+      <div class="page" id="page-explore">
+        <div class="explore-header">
+          <h2><i class="fas fa-compass"></i> สำรวจ</h2>
+          <p>ค้นพบเนื้อหาและชุมชนใหม่ๆ</p>
+        </div>
+        <div class="trending-tags">
+          <h3>Tags ที่กำลังฮิต</h3>
+          <div class="tags-grid" id="trendingTagsGrid"></div>
+        </div>
+        <div class="explore-grid" id="exploreGrid"></div>
+      </div>
+
+      <!-- Page: Communities -->
+      <div class="page" id="page-communities">
+        <div class="communities-header">
+          <h2><i class="fas fa-users"></i> ชุมชนของคุณ</h2>
+          <button class="btn-primary" onclick="showCreateCommunity()">
+            <i class="fas fa-plus"></i> สร้างชุมชน
+          </button>
+        </div>
+        <div class="communities-grid" id="communitiesGrid"></div>
+      </div>
+
+      <!-- Page: Creator Hub -->
+      <div class="page" id="page-creator">
+        <div class="creator-dashboard">
+          <h2><i class="fas fa-star"></i> Creator Hub</h2>
+          <p class="creator-sub">สร้างรายได้จากเนื้อหาของคุณอย่างโปร่งใส</p>
+
+          <div class="creator-stats-row">
+            <div class="creator-stat-card">
+              <div class="stat-icon" style="background:#EDE9FE"><i class="fas fa-coins" style="color:#7C3AED"></i></div>
+              <div class="stat-info">
+                <strong>฿12,840</strong>
+                <span>รายได้เดือนนี้</span>
+              </div>
+              <span class="stat-change positive">+23%</span>
+            </div>
+            <div class="creator-stat-card">
+              <div class="stat-icon" style="background:#ECFDF5"><i class="fas fa-users" style="color:#10B981"></i></div>
+              <div class="stat-info">
+                <strong>1,247</strong>
+                <span>Supporters</span>
+              </div>
+              <span class="stat-change positive">+15%</span>
+            </div>
+            <div class="creator-stat-card">
+              <div class="stat-icon" style="background:#EFF6FF"><i class="fas fa-eye" style="color:#3B82F6"></i></div>
+              <div class="stat-info">
+                <strong>48.2K</strong>
+                <span>Views เดือนนี้</span>
+              </div>
+              <span class="stat-change positive">+8%</span>
+            </div>
+            <div class="creator-stat-card">
+              <div class="stat-icon" style="background:#FEF2F2"><i class="fas fa-heart" style="color:#EF4444"></i></div>
+              <div class="stat-info">
+                <strong>92%</strong>
+                <span>Platform cut: เพียง 10%</span>
+              </div>
+              <span class="creator-yours">คุณได้ 90%</span>
+            </div>
+          </div>
+
+          <div class="monetize-options">
+            <h3>วิธีสร้างรายได้</h3>
+            <div class="monetize-grid">
+              <div class="monetize-card">
+                <div class="mc-icon">💰</div>
+                <h4>Direct Support</h4>
+                <p>แฟนๆ ส่งเงินให้คุณโดยตรง ไม่มีขั้นต่ำ คุณได้ 90%</p>
+                <button class="btn-activate">เปิดใช้งาน</button>
+              </div>
+              <div class="monetize-card active">
+                <div class="mc-icon">🔐</div>
+                <h4>Exclusive Content</h4>
+                <p>ล็อก content สำหรับ subscribers เท่านั้น</p>
+                <button class="btn-activated"><i class="fas fa-check"></i> กำลังใช้งาน</button>
+              </div>
+              <div class="monetize-card">
+                <div class="mc-icon">🎫</div>
+                <h4>Community Token</h4>
+                <p>สร้าง token พิเศษให้กับ top fans ของคุณ</p>
+                <button class="btn-activate">เปิดใช้งาน</button>
+              </div>
+              <div class="monetize-card">
+                <div class="mc-icon">📊</div>
+                <h4>Ad Revenue Share</h4>
+                <p>รับส่วนแบ่งจากโฆษณาที่วิ่งบนเนื้อหาของคุณ</p>
+                <button class="btn-activate">เปิดใช้งาน</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page: Data Vault -->
+      <div class="page" id="page-privacy">
+        <div class="vault-container">
+          <div class="vault-header">
+            <div class="vault-icon-wrap">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div>
+              <h2>Data Vault ของคุณ</h2>
+              <p>คุณเป็นเจ้าของข้อมูลทุกอย่าง — โปร่งใส 100%</p>
+            </div>
+          </div>
+
+          <div class="vault-score">
+            <div class="score-circle">
+              <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="#E8E8F0" stroke-width="8"/>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="url(#scoreGrad)" stroke-width="8"
+                  stroke-dasharray="220" stroke-dashoffset="44" stroke-linecap="round"
+                  transform="rotate(-90 50 50)"/>
+                <defs>
+                  <linearGradient id="scoreGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#7C3AED"/>
+                    <stop offset="100%" stop-color="#06B6D4"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="score-text">
+                <strong>80</strong>
+                <small>/100</small>
+              </div>
+            </div>
+            <div class="score-info">
+              <h3>Privacy Score: ดีมาก 🛡️</h3>
+              <p>ข้อมูลของคุณถูกป้องกันในระดับสูง ยังสามารถปรับปรุงได้อีก 2 จุด</p>
+            </div>
+          </div>
+
+          <div class="data-categories">
+            <h3>ข้อมูลที่เราเก็บ (คลิกเพื่อดูและลบ)</h3>
+            <div id="dataCategoriesList"></div>
+          </div>
+
+          <div class="export-section">
+            <h3>Export ข้อมูลของคุณ</h3>
+            <p>ดาวน์โหลดข้อมูลทั้งหมดได้เลย ไม่ต้องรอ 30 วัน</p>
+            <div class="export-buttons">
+              <button class="btn-export" onclick="exportData('json')">
+                <i class="fas fa-code"></i> JSON
+              </button>
+              <button class="btn-export" onclick="exportData('csv')">
+                <i class="fas fa-table"></i> CSV
+              </button>
+              <button class="btn-export" onclick="exportData('pdf')">
+                <i class="fas fa-file-pdf"></i> PDF Report
+              </button>
+            </div>
+          </div>
+
+          <div class="tracking-section">
+            <h3>การ Tracking</h3>
+            <div class="tracking-list" id="trackingList"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Page: Anonymous Mode -->
+      <div class="page" id="page-anonymous">
+        <div class="anon-container">
+          <div class="anon-hero">
+            <div class="anon-icon">🕵️</div>
+            <h2>Anonymous Mode</h2>
+            <p>แสดงความคิดเห็นอย่างอิสระ โดยไม่ต้องกลัว social consequence<br/>
+            ตัวตนจริงของคุณจะถูกปกป้องด้วย Zero-Knowledge Proof</p>
+            <div class="anon-status" id="anonModeStatus">
+              <div class="status-dot inactive" id="anonStatusDot"></div>
+              <span id="anonStatusText">Anonymous Mode: ปิดอยู่</span>
+            </div>
+            <button class="btn-toggle-anon" id="toggleAnonMode">
+              <i class="fas fa-user-secret"></i> เปิด Anonymous Mode
+            </button>
+          </div>
+
+          <div class="anon-features">
+            <div class="anon-feature-card">
+              <div class="af-icon">🔐</div>
+              <h4>Zero-Knowledge Identity</h4>
+              <p>เราพิสูจน์ได้ว่าคุณเป็นมนุษย์จริง โดยไม่รู้ว่าคุณเป็นใคร</p>
+            </div>
+            <div class="anon-feature-card">
+              <div class="af-icon">🎭</div>
+              <h4>Pseudonym Generator</h4>
+              <p>สร้าง anonymous handle ใหม่ทุกครั้ง หรือใช้ handle ประจำได้</p>
+            </div>
+            <div class="anon-feature-card">
+              <div class="af-icon">🛡️</div>
+              <h4>No Link to Real Profile</h4>
+              <p>โพสต์ anonymous ไม่มีทางเชื่อมกลับมาที่โปรไฟล์จริงของคุณ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar-right" id="sidebarRight">
+
+      <!-- Algorithm Transparency Panel -->
+      <div class="card algo-transparency">
+        <div class="card-header">
+          <i class="fas fa-eye"></i>
+          <h4>ทำไม Feed นี้ถึงขึ้น?</h4>
+        </div>
+        <div class="algo-reasons" id="algoReasons">
+          <div class="algo-reason">
+            <span class="reason-pill friend">เพื่อน</span>
+            <span>คน 3 คนที่คุณรู้จัก react</span>
+          </div>
+          <div class="algo-reason">
+            <span class="reason-pill interest">ความสนใจ</span>
+            <span>ตรงกับ #เทคโนโลยี ที่คุณ follow</span>
+          </div>
+          <div class="algo-reason">
+            <span class="reason-pill local">ใกล้ฉัน</span>
+            <span>โพสต์จากจังหวัดเดียวกัน</span>
+          </div>
+        </div>
+        <button class="btn-algo-settings" onclick="showPage('privacy')">
+          <i class="fas fa-cog"></i> จัดการ Algorithm ของฉัน
+        </button>
+      </div>
+
+      <!-- Community Health -->
+      <div class="card community-health">
+        <div class="card-header">
+          <i class="fas fa-heartbeat"></i>
+          <h4>สุขภาพชุมชน</h4>
+        </div>
+        <div class="health-metrics" id="healthMetrics">
+          <div class="health-metric">
+            <span class="metric-label">ความหลากหลาย</span>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width:72%;background:#10B981"></div>
+            </div>
+            <span class="metric-val">72%</span>
+          </div>
+          <div class="health-metric">
+            <span class="metric-label">Positivity</span>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width:65%;background:#F59E0B"></div>
+            </div>
+            <span class="metric-val">65%</span>
+          </div>
+          <div class="health-metric">
+            <span class="metric-label">Engagement จริง</span>
+            <div class="metric-bar">
+              <div class="metric-fill" style="width:88%;background:#7C3AED"></div>
+            </div>
+            <span class="metric-val">88%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trending in Community -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-fire"></i>
+          <h4>กำลังฮิตในชุมชนคุณ</h4>
+        </div>
+        <div class="trending-list" id="trendingList"></div>
+      </div>
+
+      <!-- Suggested People -->
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-user-plus"></i>
+          <h4>คนที่คุณอาจรู้จัก</h4>
+        </div>
+        <div class="suggested-list" id="suggestedList"></div>
+      </div>
+
+      <!-- Anti-doomscroll -->
+      <div class="card anti-doom" id="antiDoomCard">
+        <div class="doom-header">
+          <i class="fas fa-moon"></i>
+          <h4>Anti-Doomscroll</h4>
+        </div>
+        <p>เปิดใช้งานโหมดนี้เพื่อ:</p>
+        <ul class="doom-features">
+          <li><i class="fas fa-check text-green"></i> จำกัดข่าวเชิงลบ</li>
+          <li><i class="fas fa-check text-green"></i> เตือนเมื่อใช้งานนาน</li>
+          <li><i class="fas fa-check text-green"></i> ซ่อน engagement metrics</li>
+        </ul>
+        <button class="btn-doom" id="doomToggle" onclick="toggleDoomscroll()">
+          <i class="fas fa-shield-alt"></i> เปิด Anti-Doomscroll
+        </button>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- ===== MODALS ===== -->
+
+  <!-- Notification Panel -->
+  <div class="panel-overlay" id="notifOverlay" style="display:none">
+    <div class="side-panel" id="notifPanel">
+      <div class="panel-header">
+        <h3><i class="fas fa-bell"></i> การแจ้งเตือน</h3>
+        <button class="btn-icon" onclick="closePanel('notif')"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="panel-body" id="notifPanelBody"></div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- Onboarding Modal (first visit) -->
+  <div class="modal-overlay" id="onboardingOverlay">
+    <div class="modal onboarding-modal">
+      <div class="onboard-logo">
+        <svg width="64" height="64" viewBox="0 0 32 32" fill="none">
+          <circle cx="16" cy="16" r="14" stroke="url(#ob1)" stroke-width="2.5"/>
+          <circle cx="16" cy="11" r="4" fill="url(#ob1)"/>
+          <circle cx="8" cy="22" r="3" fill="url(#ob1)" opacity="0.7"/>
+          <circle cx="24" cy="22" r="3" fill="url(#ob1)" opacity="0.7"/>
+          <line x1="16" y1="15" x2="8" y2="19" stroke="url(#ob1)" stroke-width="1.5"/>
+          <line x1="16" y1="15" x2="24" y2="19" stroke="url(#ob1)" stroke-width="1.5"/>
+          <defs>
+            <linearGradient id="ob1" x1="0" y1="0" x2="32" y2="32">
+              <stop offset="0%" stop-color="#7C3AED"/>
+              <stop offset="100%" stop-color="#06B6D4"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <h1>ยินดีต้อนรับสู่ Nexus</h1>
+        <p class="onboard-subtitle">Social Network ที่ทำสิ่งที่ Facebook ทำไม่ได้</p>
+      </div>
+
+      <div class="onboard-features">
+        <div class="onboard-feature">
+          <div class="of-icon" style="background:#EDE9FE">🛡️</div>
+          <div>
+            <h4>ข้อมูลเป็นของคุณ 100%</h4>
+            <p>ดู ส่งออก และลบข้อมูลของคุณได้ทุกเมื่อ</p>
+          </div>
+        </div>
+        <div class="onboard-feature">
+          <div class="of-icon" style="background:#ECFDF5">🎛️</div>
+          <div>
+            <h4>Algorithm ที่โปร่งใส</h4>
+            <p>เลือก feed mode และเห็นได้ว่า "ทำไม" content ถึงขึ้น</p>
+          </div>
+        </div>
+        <div class="onboard-feature">
+          <div class="of-icon" style="background:#FEF3C7">💰</div>
+          <div>
+            <h4>Creator ได้ 90%</h4>
+            <p>รับเงินตรงจากแฟนๆ เราเก็บแค่ 10%</p>
+          </div>
+        </div>
+        <div class="onboard-feature">
+          <div class="of-icon" style="background:#F0F9FF">🕵️</div>
+          <div>
+            <h4>Anonymous Mode</h4>
+            <p>แสดงความคิดเห็นอย่างอิสระ ไม่ต้องกลัว</p>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-start" onclick="closeOnboarding()">
+        เริ่มใช้งาน Nexus <i class="fas fa-arrow-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <script src="src/data/mockData.js"></script>
+  <script src="src/utils/helpers.js"></script>
+  <script src="src/components/post.js"></script>
+  <script src="src/pages/feed.js"></script>
+  <script src="src/pages/explore.js"></script>
+  <script src="src/pages/communities.js"></script>
+  <script src="src/pages/privacy.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>
